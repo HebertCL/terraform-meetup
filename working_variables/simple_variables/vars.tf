@@ -10,6 +10,6 @@ variable "sample_ami" {
   default = "ami-22ce4934"
 }
 
-variable "" {
+variable "inst_size" {
   default = "t2.micro"
 }

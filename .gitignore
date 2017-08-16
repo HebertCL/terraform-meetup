@@ -1,0 +1,7 @@
+#-------------------------------------------------
+# Ignore all .terraform folders and its contents
+#-------------------------------------------------
+*.terraform\
+*.terraform/
+*.terraform\*
+*.terraform/*

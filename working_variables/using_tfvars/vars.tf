@@ -5,7 +5,7 @@
 variable "region" {
   description = "Set us-east-1 region"
 }
-variable "example2_ami" {
+variable "example3_ami" {
   description = "Regular CentOS image"
 }
 variable "instance_size" {
