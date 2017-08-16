@@ -11,7 +11,7 @@ provider "aws" {
 
 # Configure a remote state for vpc resources needed.
 terraform {
-  backend "local"{
+  backend "local" {
     #path = "../remote_state/vpc/terraform.tfstate" // Remote state configuration for Linux/OS X.
     path = "..\remote_state\vpc\terraform.tfstate" // Remote state configuration for Windows.
   }

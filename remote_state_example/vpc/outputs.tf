@@ -2,7 +2,7 @@
 #   Remote example outputs
 #------------------------------
 
-output = "vpc_id" {
+output "vpc_id" {
   value = "${aws_vpc.remote_example_vpc.id}"
 }
 
