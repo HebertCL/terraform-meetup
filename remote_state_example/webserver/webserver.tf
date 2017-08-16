@@ -113,7 +113,7 @@ resource "aws_autoscaling_group" "example_web_asg" {
         max_size = "${var.max_size}"
 	health_check_grace_period = 100
 	health_check_type = "ELB"
-	load_balancers = ["${aws_elb.test_lb.id}"]
+	load_balancers = ["${aws_elb.example_elb.id}"]
         launch_configuration = "${aws_launch_configuration.webserver.id}"
         force_delete = true
 

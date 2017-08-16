@@ -16,6 +16,3 @@ variable "subnet_cidr" {
 variable "a_zone" {
   default = "us-east-1a"
 }
-variable "route_cidr" {
-  default = "0.0.0.0/0"
-}

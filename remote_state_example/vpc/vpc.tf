@@ -12,8 +12,8 @@ provider "aws" {
 # Configure a remote state for vpc resources needed.
 terraform {
   backend "local" {
-    #path = "../remote_state/vpc/terraform.tfstate" // Remote state configuration for Linux/OS X.
-    path = "..\remote_state\vpc\terraform.tfstate" // Remote state configuration for Windows.
+    path = "../remote_state/vpc/terraform.tfstate" // Remote state configuration for Linux/OS X.
+    #path = "..\remote_state\vpc\terraform.tfstate" // Remote state configuration for Windows.
   }
 }
 
@@ -51,20 +51,12 @@ resource "aws_subnet" "remote_example_subnet" {
 # Create a new public table.
 resource "aws_route_table" "remote_example_rt" {
   vpc_id = "${aws_vpc.remote_example_vpc.id}" // Using interpolation syntax.
-
+  route{
+          cidr_block = "0.0.0.0/0"
+          gateway_id = "${aws_internet_gateway.remote_example_gw.id}"
+  }
   tags {
     Name = "Remote example routing table"
-  }
-}
-
-# Create a new route for the routing table.
-resource "aws_route" "remote_example_r" {
-  route_table_id = "${aws_route_table.remote_example_rt.id}" // Using interpolation syntax.
-  gateway_id = "${aws_internet_gateway.remote_example_gw.id}" // Using interpolation syntax.
-  cidr_block = "${var.route_cidr}"
-
-  tags {
-    Name = "Remote example route"
   }
 }
 
