@@ -11,3 +11,8 @@
 ### What do you need to know for this Meetup:
 - Basic coding skills
 ####
+
+### What we are going to cover in this Meetup:
+- Terraform variables and its variants
+- Remote states and its usage
+- Terraform modules, its purpose and how they work
