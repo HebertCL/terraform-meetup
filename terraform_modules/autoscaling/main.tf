@@ -1,13 +1,6 @@
-#--------------------------
-# Remote example webserver
-#--------------------------
-
-# Define AWS provider.
-provider "aws" {
-  region = "${var.aws_region}"
-  access_key = "${var.access_key}"
-  secret_key = "${var.secret_key}"
-}
+#-----------------------------------
+# Module example autoscaling group
+#-----------------------------------
 
 # Import VPC script output.
 data "terraform_remote_state" "vpc" {
@@ -20,11 +13,11 @@ data "terraform_remote_state" "vpc" {
 
 # Create Auto Scaling Group launch configuration.
 resource "aws_launch_configuration" "webserver" {
-        image_id = "${var.ami_id}"
-        instance_type = "${var.size}"
-        security_groups = ["${aws_security_group.web.id}"]
+        image_id = "${var.image_id}"
+        instance_type = "${var.inst_size}"
+        #security_groups = ["${aws_security_group.web.id}"]
         key_name = "${var.ssh_key}"
-	
+
         lifecycle {
                 create_before_destroy = true
         }
@@ -34,7 +27,7 @@ resource "aws_launch_configuration" "webserver" {
 resource "aws_security_group" "web" {
         name = "webserver_security_group"
         description = "Launch Configuration Security Group"
-        vpc_id = "${data.terraform_remote_state.vpc.vpc_id}"
+        #vpc_id = "${data.terraform_remote_state.vpc.vpc_id}"
 
         ingress {
                 from_port = "${var.ssh_port}"
@@ -62,9 +55,9 @@ resource "aws_security_group" "web" {
 
 # Create load balancer for webserver group.
 resource "aws_elb" "example_elb" {
-        name = "remote-example-elb"
+        name = "module-example-elb"
         security_groups = ["${aws_security_group.lb.id}"]
-	subnets = ["${data.terraform_remote_state.vpc.subnet_id}"]
+	      #subnets = ["${data.terraform_remote_state.vpc.subnet_id}"]
 
         health_check {
                 healthy_threshold = 2
@@ -88,7 +81,7 @@ resource "aws_elb" "example_elb" {
 resource "aws_security_group" "lb" {
         name = "example-lbsg"
         description = "Allow Port 80 Incoming Traffic"
-        vpc_id = "${data.terraform_remote_state.vpc.vpc_id}"
+        #vpc_id = "${data.terraform_remote_state.vpc.vpc_id}"
 
         ingress {
                 from_port = "${var.http_port}"
@@ -106,17 +99,17 @@ resource "aws_security_group" "lb" {
 
 # Create auto scaling group.
 resource "aws_autoscaling_group" "example_web_asg" {
-        vpc_zone_identifier = ["${data.terraform_remote_state.vpc.subnet_id}"]
-        name = "web_asg"
-        min_size = "${var.min_size}"
-        max_size = "${var.max_size}"
+  #vpc_zone_identifier = ["${data.terraform_remote_state.vpc.subnet_id}"]
+  name = "web_asg"
+  min_size = "${var.min_size}"
+  max_size = "${var.max_size}"
 	health_check_grace_period = 100
 	health_check_type = "ELB"
 	load_balancers = ["${aws_elb.example_elb.id}"]
-        launch_configuration = "${aws_launch_configuration.webserver.id}"
-        force_delete = true
+  launch_configuration = "${aws_launch_configuration.webserver.id}"
+  force_delete = true
 
-        lifecycle {
-                create_before_destroy = true
-        }
+  lifecycle {
+    create_before_destroy = true
+  }
 }
