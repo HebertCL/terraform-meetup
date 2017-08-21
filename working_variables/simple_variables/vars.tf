@@ -13,3 +13,8 @@ variable "sample_ami" {
 variable "inst_size" {
   default = "t2.micro"
 }
+
+variable "count" {
+  description = "Enter the number of instances to create"
+  default = 2
+}

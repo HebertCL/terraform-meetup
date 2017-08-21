@@ -11,6 +11,7 @@ provider "aws" {
 resource "aws_instance" "sample_instance" {
     ami = "${var.sample_ami}"
     instance_type = "${var.inst_size}"
+    count = "${var.count}"
 
     tags {
       Name = "Variable example instance"
